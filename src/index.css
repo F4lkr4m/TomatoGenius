@@ -1,13 +1,29 @@
+:root {
+  --x1: 2px; 
+  --x2: calc(2 * var(var(--x1))); /* 4px */
+  --x4: calc(4 * var(var(--x1))); /* 8px */
+  --x6: calc(6 * var(var(--x1))); /* 12px */
+  --x8: calc(8 * var(var(--x1))); /* 16px */
+  --x10: calc(10 * var(var(--x1))); /* 20px */
+  --x12: calc(12 * var(var(--x1))); /* 24px */
+  --x14: calc(14 * var(var(--x1))); /* 28px */
+  --x16: calc(16 * var(var(--x1))); /* 32px */
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    "Bebas Neue" sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+p {
+  font-family: "Bebas Neue", "sans-serif";
 }

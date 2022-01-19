@@ -17,6 +17,10 @@
     "web-vitals": "^2.1.3"
   },
   "scripts": {
+    "prettier": "prettier 'src/**/*.tsx'",
+    "prettier:fix": "prettier --write 'src/**/*.tsx'",
+    "eslint": "eslint 'src/**/*.tsx'",
+    "eslint:fix": "eslint --fix 'src/**/*.tsx'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,5 +43,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^8.7.0",
+    "eslint-plugin-react": "^7.28.0",
+    "prettier": "2.5.1"
   }
 }
