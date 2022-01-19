@@ -6,6 +6,7 @@ interface ButtonProps {
   wide?: boolean;
   icon?: string;
   type?: 'hover' | 'transparent' | 'filled';
+  centered?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
@@ -13,8 +14,16 @@ const Button = (props: ButtonProps) => {
   if (!type) {
     type = 'hover';
   }
+
   return (
-    <button className={`button` + `${props.wide ? ' button--wide' : ''}` + ` button--${type}`}>
+    <button
+      className={
+        `button` +
+        `${props.wide ? ' button--wide' : ''}` +
+        ` button--${type}` +
+        `${props.centered ? ' button--centered' : ''}`
+      }
+    >
       {props.icon ? <img className={'button__icon'} src={props.icon} /> : ''}
       {props.label}
     </button>

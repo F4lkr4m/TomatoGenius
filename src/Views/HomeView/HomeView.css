@@ -1,0 +1,5 @@
+.home-view__layout {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 4fr 2fr;
+}

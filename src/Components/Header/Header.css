@@ -35,6 +35,7 @@
     letter-spacing: 0;
     white-space: nowrap;
     font-size: var(--x16);
+    color: var(--secondaryTextColor)
 }
 
 .header__nav {

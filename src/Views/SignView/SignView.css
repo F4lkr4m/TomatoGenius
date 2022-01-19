@@ -5,3 +5,16 @@
     justify-content: center;
     align-items: flex-start;
 }
+
+@media (width < 800px) {
+    .sign-view__layout {
+        gap: 40px;
+    }
+}
+
+
+@media (width < 580px) {
+    .sign-view__layout {
+        grid-auto-flow: row;
+    }
+}

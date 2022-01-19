@@ -4,8 +4,8 @@
     --buttonPaddingBT: var(--x4);
 
     display: inline-grid;
-    grid-template-columns: min-content min-content;
-    column-gap: var(x2);
+    grid-auto-flow: column;
+    column-gap: 0.4em;
     align-items: center;
 
     outline: none;
@@ -52,4 +52,8 @@
 
 .button--filled:hover {
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+.button--centered {
+    justify-content: center;
 }

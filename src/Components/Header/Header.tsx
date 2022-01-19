@@ -18,8 +18,12 @@ class Header extends React.Component<HeaderProps> {
     return (
       <header className={'header'}>
         <div className="header__logo-box">
-          <img className="header__logo" src={this.props.logo} />
-          <span className="header__logo-text">{this.props.logoText}</span>
+          <Link to="/">
+            <img className="header__logo" src={this.props.logo} />
+          </Link>
+          <Link to="/">
+            <span className="header__logo-text">{this.props.logoText}</span>
+          </Link>
         </div>
         <nav className="header__nav">
           <Button label="О нас" />

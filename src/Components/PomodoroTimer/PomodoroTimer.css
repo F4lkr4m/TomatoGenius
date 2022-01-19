@@ -1,0 +1,41 @@
+.pomodoro-timer {
+    --timerRadius: var(--x4);
+
+    width: 100%;
+    height: 240px;
+
+    border: 2px solid rgb(210, 208, 204);
+    border-radius: var(--timerRadius);
+
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-template-columns: 3fr 2fr;
+}
+
+.pomodoro-timer__time-box {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    margin-left: var(--x16);
+}
+
+.pomodoro-timer__time {
+    font-family: 'Gilroy';
+    font-size: 124px;
+}
+
+.pomodoro-timer__menu {
+    display: grid;
+    grid-auto-flow: row;
+    padding-left: 0;
+    padding-right: var(--x16);
+
+    row-gap: var(--x8);
+
+}
+
+.pomodoro-timer__control {
+    display: flex;
+    column-gap: var(--x4);
+    justify-content: center;
+}
