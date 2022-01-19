@@ -1,16 +1,14 @@
 import React from 'react';
 import './Fonts.css';
 
-
 interface FontsProps {
-    type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p',
-    text?: string,
+  type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
+  text?: string;
+  secondary?: boolean;
 }
 
 const Fonts = (props: FontsProps) => {
-    return (
-        <props.type>{props.text}</props.type>
-    )
-}
+  return <props.type className={`${props.secondary ? 'font--secondary' : ''}`}>{props.text}</props.type>;
+};
 
 export default Fonts;

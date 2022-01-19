@@ -47,4 +47,26 @@
   --x12: calc(12 * var(--x1)); /* 24px */
   --x14: calc(14 * var(--x1)); /* 28px */
   --x16: calc(16 * var(--x1)); /* 32px */
+
+  /* LIGHT THEME */
+  --backgroundColor: #EEEBE2;
+  --textColor: #A39F8B;
+  --secondaryTextColor: #080909;
+  --contrastColor: #080909;
+  --secondaryColor: #C87E74;
+  --selectColor: #7FA480;
+}
+
+.dark {
+    /* DARK THEME */
+    --backgroundColor: #313131;
+    --textColor: #616161;
+    --secondaryTextColor: #F5E6C8;
+    --contrastColor: #F5E6C8;
+    --secondaryColor: #F66E0D;
+    --selectColor: #F5E6C8;
+}
+
+body {
+  background-color: var(--backgroundColor);
 }

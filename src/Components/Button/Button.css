@@ -1,3 +1,46 @@
 .button {
-    
+    --buttonRadius: var(--x2);
+    --buttonPaddingLR: var(--x6);
+    --buttonPaddingBT: var(--x4);
+
+    display: inline-grid;
+    grid-template-columns: min-content min-content;
+    column-gap: var(x2);
+    align-items: center;
+
+    outline: none;
+    border: none;
+
+    font-family: "Bebas Neue", "sans-serif";
+    line-height: 1;
+    font-size: var(--x8);
+
+    border-radius: var(--buttonRadius);
+
+    padding-left: var(--buttonPaddingLR);
+    padding-right: var(--buttonPaddingLR);
+
+    padding-top: var(--buttonPaddingBT);
+    padding-bottom: var(--buttonPaddingBT);
+
+    background-color: rgba(0, 0, 0, 0);
+
+    cursor: pointer;
+}
+
+.button--wide {
+    width: 100%;
+}
+
+.button--hover {
+    color: var(--textColor);
+}
+
+.button--hover:hover {
+    color: var(--secondaryTextColor);
+}
+
+.button__icon {
+    height: var(--x12);
+    width: var(--x12)
 }

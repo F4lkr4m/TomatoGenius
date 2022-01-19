@@ -1,6 +1,7 @@
 h1, h2, h3, h4, h5, h6, p {
     --fontsMarginTB: var(--x4);
-
+    
+    color: var(--textColor);
     font-family: "Bebas Neue", "sans-serif";
     text-align: start;
     margin-top: var(--fontsMarginTB);
@@ -38,4 +39,8 @@ h6 {
 
 p {
     font-size: 16px;
+}
+
+.font--secondary {
+    color: var(--secondaryTextColor);
 }
