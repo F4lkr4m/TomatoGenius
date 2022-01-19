@@ -5,12 +5,16 @@ interface ButtonProps {
   label?: string;
   wide?: boolean;
   icon?: string;
-  hover?: boolean;
+  type?: 'hover' | 'transparent' | 'filled';
 }
 
 const Button = (props: ButtonProps) => {
+  let type: string | undefined = props.type;
+  if (!type) {
+    type = 'hover';
+  }
   return (
-    <button className={`button` + `${props.wide ? ' button--wide' : ''}` + `${props.hover ? ' button--hover' : ''}`}>
+    <button className={`button` + `${props.wide ? ' button--wide' : ''}` + ` button--${type}`}>
       {props.icon ? <img className={'button__icon'} src={props.icon} /> : ''}
       {props.label}
     </button>

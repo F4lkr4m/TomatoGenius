@@ -30,11 +30,8 @@ class Header extends React.Component<HeaderProps> {
             </>
           ) : (
             <>
-              <Link to="/signin">
-                <Button label="Вход" />
-              </Link>
-              <Link to="/signup">
-                <Button label="Регистрация" />
+              <Link to="/sign">
+                <Button label="Вход/Регистрация" />
               </Link>
             </>
           )}

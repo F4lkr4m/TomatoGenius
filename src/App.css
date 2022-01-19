@@ -88,6 +88,8 @@ a {
 
   width: 100%;
 
+  box-sizing: border-box;
+
   padding-left: var(--appPaddingLR);
   padding-right: var(--appPaddingLR);
   padding-top: var(--appPaddingTB);

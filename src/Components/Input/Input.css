@@ -12,10 +12,15 @@
     white-space: nowrap;
 
     border-radius: var(--inputRadius);
+
+    box-sizing: border-box;
+
     padding-left: var(--inputPaddingLR);
     padding-right: var(--inputPaddingLR);
     padding-top: var(--inputPaddingBT);
     padding-bottom: var(--inputPaddingBT);
 
     background-color: rgba(0, 0, 0, 0.1);
+
+    width: 100%;
 }

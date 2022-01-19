@@ -1,5 +1,5 @@
 .button {
-    --buttonRadius: var(--x2);
+    --buttonRadius: var(--x4);
     --buttonPaddingLR: var(--x6);
     --buttonPaddingBT: var(--x4);
 
@@ -44,4 +44,12 @@
 .button__icon {
     height: var(--x12);
     width: var(--x12)
+}
+
+.button--filled {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.button--filled:hover {
+    background-color: rgba(0, 0, 0, 0.2);
 }
