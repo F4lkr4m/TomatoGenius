@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Fonts from './Components/Fonts/Fonts';
+import Button from './Components/Button/Button';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Fonts type='h5' text='Привет'/>
       <Fonts type='h6' text='Привет'/>
       <Fonts type='p' text='Привет'/>
+      <Button label='Hello'/>
     </div>
   );
 }
