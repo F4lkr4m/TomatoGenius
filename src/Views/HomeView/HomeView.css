@@ -3,3 +3,9 @@
     grid-auto-flow: column;
     grid-template-columns: 4fr 2fr;
 }
+
+.home-view__content {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--x12);
+}

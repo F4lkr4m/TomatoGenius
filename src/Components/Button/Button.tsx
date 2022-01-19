@@ -7,6 +7,7 @@ interface ButtonProps {
   icon?: string;
   type?: 'hover' | 'transparent' | 'filled';
   centered?: boolean;
+  onClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
@@ -23,6 +24,7 @@ const Button = (props: ButtonProps) => {
         ` button--${type}` +
         `${props.centered ? ' button--centered' : ''}`
       }
+      onClick={props.onClick}
     >
       {props.icon ? <img className={'button__icon'} src={props.icon} /> : ''}
       {props.label}
