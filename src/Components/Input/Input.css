@@ -1,0 +1,21 @@
+.input {
+    --inputRadius: var(--x4);
+    --inputPaddingLR: var(--x6);
+    --inputPaddingBT: var(--x4);
+
+    outline: none;
+    border: none;
+
+    font-family: "Gilroy";
+    line-height: 1;
+    font-size: var(--x8);
+    white-space: nowrap;
+
+    border-radius: var(--inputRadius);
+    padding-left: var(--inputPaddingLR);
+    padding-right: var(--inputPaddingLR);
+    padding-top: var(--inputPaddingBT);
+    padding-bottom: var(--inputPaddingBT);
+
+    background-color: rgba(0, 0, 0, 0.1);
+}

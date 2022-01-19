@@ -6,12 +6,14 @@ import Button from './Components/Button/Button';
 import Fonts from './Components/Fonts/Fonts';
 import Header from './Components/Header/Header';
 import { Routes, Route } from 'react-router-dom';
+import Input from './Components/Input/Input';
 
 function App() {
   return (
     <>
       <Header userAuth={false} logo={headerLogo} logoText={'Tomato Genius'} />
       <div className="app">
+        <Input type="email" placeholder="smth" />
         <Button label="Привет" hover={true} icon={logo} wide={false} />
         <Fonts type="h1" secondary={true} text="Привет" />
         <Fonts type="h2" text="Привет" />
