@@ -1,0 +1,7 @@
+.sign-view__layout {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 240px;
+    justify-content: center;
+    align-items: flex-start;
+}

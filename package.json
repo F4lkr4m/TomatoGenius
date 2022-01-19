@@ -23,7 +23,7 @@
     "prettier:fix": "prettier --write 'src/**/*.tsx'",
     "eslint": "eslint 'src/**/*.tsx'",
     "eslint:fix": "eslint --fix 'src/**/*.tsx'",
-    "start": "react-scripts start",
+    "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
