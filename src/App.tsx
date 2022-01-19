@@ -9,7 +9,7 @@ import Header from './Components/Header/Header';
 function App() {
   return (
     <>
-      <Header logo={headerLogo} logoText={'TomatoGenius'}/>
+      <Header logo={headerLogo} logoText={'Tomato Genius'} />
       <Fonts type="h1" secondary={true} text="Привет" />
       <Fonts type="h2" text="Привет" />
       <Fonts type="h3" text="Привет" />

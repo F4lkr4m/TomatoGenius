@@ -37,6 +37,11 @@
   }
 }
 
+@font-face {
+  font-family: "Gilroy";
+  src: url("./Assets/Gilroy-Regular.ttf");
+}
+
 :root {
   --x1: 2px; 
   --x2: calc(2 * var(--x1)); /* 4px */
@@ -47,6 +52,8 @@
   --x12: calc(12 * var(--x1)); /* 24px */
   --x14: calc(14 * var(--x1)); /* 28px */
   --x16: calc(16 * var(--x1)); /* 32px */
+
+  --mobileW: 580px;
 
   /* LIGHT THEME */
   --backgroundColor: #EEEBE2;

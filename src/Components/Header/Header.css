@@ -11,28 +11,43 @@
     box-sizing: border-box;
     padding-left: var(--headerPaddingLR);
     padding-right: var(--headerPaddingLR);
+
+    border-bottom: 2px solid rgb(210, 208, 204);
 }
 
 .header__logo-box {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: nowrap;
     justify-content: flex-start;
+    column-gap: 0;
 }
 
 .header__logo {
-    width: 124px;
+    height: 40px;
+    padding-bottom: 4px;
 }
 
 .header__logo-text {
-    font-family: "Bebas Neue", "sans-serif";
+    font-family: "Gilroy";
     line-height: 1;
     font-weight: 600;
     letter-spacing: 0;
-    font-size: var(--x12);
+    white-space: nowrap;
+    font-size: var(--x16);
 }
 
 .header__nav {
     display: inline-grid;
     grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (width < 580px) {
+    .header {
+        --headerPaddingLR: 0;
+    }
+
+    .header__logo-text {
+        display: none;
+    }
 }
