@@ -15,6 +15,7 @@
     line-height: 1;
     font-size: var(--x8);
     white-space: nowrap;
+    color: var(--secondaryTextColor);
 
     border-radius: var(--buttonRadius);
 

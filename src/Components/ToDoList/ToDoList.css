@@ -1,0 +1,29 @@
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--x16);
+    justify-content: flex-start;
+    
+    width: 100%;
+    
+    box-sizing: border-box;
+}
+
+.todo-list__list {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--x16);
+}
+
+.todo-list__task {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--x6);
+}
+
+.todo-list__button-group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--x6);
+}

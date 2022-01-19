@@ -39,3 +39,28 @@
     column-gap: var(--x4);
     justify-content: center;
 }
+
+@media (width < 580px) {
+    .pomodoro-timer {
+        grid-auto-flow: row;
+        height: 320px;
+        grid-template-columns: unset;
+        grid-template-rows: 3fr 2fr;
+    }
+
+    .pomodoro-timer__time-box {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .pomodoro-timer__time {
+        font-size: 80px;
+    }
+
+    .pomodoro-timer__menu {
+        box-sizing: border-box;
+
+        padding-left: var(--x4);
+        padding-right: var(--x4);
+    }
+} 
