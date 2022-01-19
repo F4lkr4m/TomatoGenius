@@ -77,3 +77,19 @@
 body {
   background-color: var(--backgroundColor);
 }
+
+a {
+  text-decoration: none;
+}
+
+.app {
+  --appPaddingLR: 10%;
+  --appPaddingTB: var(--x14);
+
+  width: 100%;
+
+  padding-left: var(--appPaddingLR);
+  padding-right: var(--appPaddingLR);
+  padding-top: var(--appPaddingTB);
+  padding-bottom: var(--appPaddingTB);
+}
