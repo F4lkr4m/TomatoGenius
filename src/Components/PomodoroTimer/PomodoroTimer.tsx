@@ -41,6 +41,9 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
   pauseButton: ButtonI;
   doneButton: ButtonI;
 
+  logger: React.RefObject<PomodoroLogger>;
+  targetInput: React.RefObject<Input>;
+
   constructor() {
     super(null);
 
@@ -78,8 +81,8 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
     });
 
     this.state = {
-      mins: 60,
-      secs: 0,
+      mins: 0,
+      secs: 5,
       active: false,
       timer: undefined,
       leftButton: this.playButton,
@@ -90,10 +93,14 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       pomodoroQueue: pomodoroQueue,
       currentTask: pomodoroQueue[0],
     };
+
+    this.logger = React.createRef();
+    this.targetInput = React.createRef();
   }
 
   private play = () => {
     if (!this.state.active) {
+      this.addCurrentTask();
       const timer = setInterval(() => {
         this.countIteration();
       }, 1000);
@@ -131,12 +138,32 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
     }
   };
 
+  private addCurrentTask = () => {
+    const currentTask = this.state.currentTask.task;
+    const added = this.logger.current?.addLog({
+      task: this.state.currentTask.task,
+      mins: this.state.currentTask.mins,
+      secs: this.state.currentTask.secs,
+      id: currentTask === 'pomodoro' ? this.state.pomodoroNumber : this.state.breakNumber,
+      status: 'process',
+      target: this.targetInput.current?.value,
+    });
+    if (added) {
+      this.targetInput.current?.toggleDisable();
+    }
+  };
+
   private done = () => {
+    if (this.state.timer) {
+      clearInterval(this.state.timer);
+    }
     let newPomodoroNumber = this.state.pomodoroNumber;
     let newBreakNumber = this.state.breakNumber;
     if (this.state.currentTask.task === 'pomodoro') {
+      this.logger.current?.updateLog(this.state.pomodoroNumber, 'pomodoro', 'done');
       newPomodoroNumber += 1;
     } else {
+      this.logger.current?.updateLog(this.state.breakNumber, 'break', 'done');
       newBreakNumber += 1;
     }
     const nextStateIndex = (newPomodoroNumber + newBreakNumber) % this.state.pomodoroQueue.length;
@@ -147,7 +174,14 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       pomodoroNumber: newPomodoroNumber,
       currentTask: nextState,
       rightButton: this.stopButton,
+      leftButton: this.playButton,
+      timer: undefined,
+      active: false,
     });
+    if (this.targetInput.current) {
+      this.targetInput.current!.value = '';
+      this.targetInput.current?.toggleDisable();
+    }
   };
 
   private checkEndOfTimer() {
@@ -164,11 +198,11 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       return;
     }
     if (this.checkEndOfTimer() && this.state.timer) {
-      this.stop();
+      this.done();
     }
 
     if (this.state.secs === 1 && this.state.mins === 0) {
-      this.stop();
+      this.done();
     }
 
     let newMins = this.state.mins;
@@ -207,7 +241,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
           </div>
           <menu className="pomodoro-timer__menu">
             <Fonts type="h4" text={taskLabel} />
-            <Input type="text" placeholder="Цель помидора" />
+            <Input ref={this.targetInput} type="text" placeholder="Цель помидора" />
             <div className="pomodoro-timer__control">
               <Button
                 onClick={this.state.leftButton.onClick}
@@ -226,7 +260,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
             </div>
           </menu>
         </div>
-        <PomodoroLogger />
+        <PomodoroLogger ref={this.logger} />
       </>
     );
   }

@@ -9,7 +9,7 @@ interface PomodoroLog {
   mins: number;
   secs: number;
   status: 'process' | 'done';
-  target: string;
+  target: string | undefined;
 }
 
 interface PomodoroLoggerI {
@@ -24,18 +24,41 @@ class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
     };
   }
 
-  addLog = (logInfo: PomodoroLog) => {
-    // Find similar
-    const foundedSimilar = this.state.logs.find((log) => {
-      if (log.target === logInfo.task && log.id === logInfo.id) {
+  private foundSimilarLog = (task: 'pomodoro' | 'break', id: number) => {
+    return this.state.logs.find((log) => {
+      console.log(log.task, task, log.id, id);
+      if (log.task === task && log.id === id) {
         return true;
       }
       return false;
     });
+  };
+
+  addLog = (logInfo: PomodoroLog): boolean => {
+    // Find similar
+    const foundedSimilar = this.foundSimilarLog(logInfo.task, logInfo.id);
 
     if (!foundedSimilar) {
       const newLogs = this.state.logs;
       newLogs.push(logInfo);
+      this.setState({
+        logs: newLogs,
+      });
+      return true;
+    }
+    return false;
+  };
+
+  updateLog = (id: number, task: 'pomodoro' | 'break', newStatus: 'done' | 'process') => {
+    const foundedSimilar = this.foundSimilarLog(task, id);
+    if (foundedSimilar) {
+      const newLogs = this.state.logs.map((log) => {
+        if (log.id === foundedSimilar.id && log.task === foundedSimilar.task) {
+          log.status = newStatus;
+          return log;
+        }
+        return log;
+      });
       this.setState({
         logs: newLogs,
       });
@@ -49,7 +72,7 @@ class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
           const label = `${item.task === 'pomodoro' ? 'Помидор №' : 'Перерыв №'}${item.id}`;
           const time = `${item.mins}:${item.secs}`;
           const status = `Статус: ${item.status === 'done' ? 'выполнен' : 'в процессе'}`;
-          const target = item.target;
+          const target = item.target ? item.target : 'У самурая нет цели';
           const key = String(genId.next().value);
           return (
             <div key={key} className="pomodoro-logger__log">
@@ -60,18 +83,6 @@ class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
             </div>
           );
         })}
-        <div className="pomodoro-logger__log">
-          <Fonts type="h4" text="Помидор №1" />
-          <Fonts type="p" text="60:00" />
-          <Fonts type="p" text="Статус: выполнен" />
-          <Fonts type="p" text="Цель: Какая-то" />
-        </div>
-        <div className="pomodoro-logger__log">
-          <Fonts type="h4" text="Помидор №1" />
-          <Fonts type="p" text="60:00" />
-          <Fonts type="p" text="Статус: выполнен" />
-          <Fonts type="p" text="Цель: Какая-то" />
-        </div>
       </div>
     );
   }

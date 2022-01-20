@@ -15,6 +15,10 @@ class Input extends React.Component<InputProps> {
     this.input = React.createRef();
   }
 
+  toggleDisable = () => {
+    this.input.current?.toggleAttribute('disabled');
+  };
+
   get value() {
     if (this.input.current) {
       return this.input.current?.value;
