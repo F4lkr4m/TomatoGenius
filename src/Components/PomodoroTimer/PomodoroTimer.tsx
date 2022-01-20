@@ -81,8 +81,8 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
     });
 
     this.state = {
-      mins: 0,
-      secs: 5,
+      mins: 60,
+      secs: 0,
       active: false,
       timer: undefined,
       leftButton: this.playButton,

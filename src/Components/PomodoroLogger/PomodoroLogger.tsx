@@ -14,6 +14,7 @@ interface PomodoroLog {
 
 interface PomodoroLoggerI {
   logs: Array<PomodoroLog>;
+  mins: number;
 }
 
 class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
@@ -21,12 +22,12 @@ class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
     super(props);
     this.state = {
       logs: [],
+      mins: 0,
     };
   }
 
   private foundSimilarLog = (task: 'pomodoro' | 'break', id: number) => {
     return this.state.logs.find((log) => {
-      console.log(log.task, task, log.id, id);
       if (log.task === task && log.id === id) {
         return true;
       }
@@ -59,8 +60,13 @@ class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
         }
         return log;
       });
+      let newMins = this.state.mins;
+      if (foundedSimilar.task === 'pomodoro') {
+        newMins = this.state.mins + foundedSimilar.mins;
+      }
       this.setState({
         logs: newLogs,
+        mins: newMins,
       });
     }
   };
@@ -83,6 +89,9 @@ class PomodoroLogger extends React.Component<unknown, PomodoroLoggerI> {
             </div>
           );
         })}
+        <div className="pomodoro-logger__full-time">
+          <Fonts text={`Проведенное время за работой сегодня: ${this.state.mins / 60} h`} type="h4" />
+        </div>
       </div>
     );
   }

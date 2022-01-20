@@ -13,3 +13,20 @@
   flex-wrap: nowrap;
   align-items: center;
 }
+
+.pomodoro-logger__full-time {
+
+}
+
+@media (width < 580px) {
+  .pomodoro-logger__log {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    row-gap: var(--x4);
+    flex-wrap: wrap;
+  }
+
+  .pomodoro-logger {
+    margin-bottom: var(--x16);
+  }
+}
