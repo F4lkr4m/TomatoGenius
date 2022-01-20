@@ -6,18 +6,29 @@ import Fonts from '../Fonts/Fonts';
 interface AccordionProps {
   label?: string;
   items?: Array<ReactNode>;
-  id?: string;
 }
 
-class Accordion extends React.Component<AccordionProps> {
+class Accordion extends React.Component<AccordionProps, AccordionProps> {
   accordion: React.RefObject<HTMLDivElement>;
 
   constructor(props: AccordionProps) {
     super(props);
+    this.state = {
+      items: this.props.items,
+      label: this.props.label,
+    };
     this.accordion = React.createRef();
   }
 
-  toggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+  addItem(item: ReactNode | HTMLElement) {
+    const newItems = this.state.items;
+    newItems?.push(item);
+    this.setState({
+      items: newItems,
+    });
+  }
+
+  private toggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { currentTarget } = event;
     const arrow = currentTarget.querySelector('.accordion-button__arrow');
     if (arrow) {
@@ -36,7 +47,7 @@ class Accordion extends React.Component<AccordionProps> {
           <img src={arrowSvg} className="accordion-button__arrow" alt="arrow img" />
         </button>
         <ul className="accordion__list">
-          {this.props.items?.map((item) => {
+          {this.state.items?.map((item) => {
             return (
               <li key="2" className="accordion__list-item">
                 {item}
