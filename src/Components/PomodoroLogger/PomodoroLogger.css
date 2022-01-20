@@ -1,0 +1,14 @@
+.pomodoro-logger {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  row-gap: var(--x10);
+}
+
+.pomodoro-logger__log {
+  display: inline-grid;
+  grid-auto-flow: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}

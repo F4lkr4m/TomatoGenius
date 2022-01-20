@@ -7,6 +7,7 @@ import stopSvg from '../../Assets/stop-button.svg';
 import playSvg from '../../Assets/play-button.svg';
 import pauseSvg from '../../Assets/pause-button.svg';
 import doneSvg from '../../Assets/done-button.svg';
+import PomodoroLogger from '../PomodoroLogger/PomodoroLogger';
 
 interface ButtonI {
   onClick: () => void;
@@ -225,6 +226,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
             </div>
           </menu>
         </div>
+        <PomodoroLogger />
       </>
     );
   }
