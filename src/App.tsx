@@ -5,6 +5,8 @@ import Header from './Components/Header/Header';
 import { Routes, Route } from 'react-router-dom';
 import SignView from './Views/SignView/SignView';
 import HomeView from './Views/HomeView/HomeView';
+import AboutView from './Views/AboutView/AboutView';
+import { constants } from './Utils/Constants';
 
 function App() {
   return (
@@ -12,8 +14,9 @@ function App() {
       <Header userAuth={false} logo={headerLogo} logoText={'Tomato Genius'} />
       <div className="app">
         <Routes>
-          <Route path="/" element={<HomeView />} />
-          <Route path="/sign" element={<SignView />} />
+          <Route path={constants.urls.home} element={<HomeView />} />
+          <Route path={constants.urls.sign} element={<SignView />} />
+          <Route path={constants.urls.about} element={<AboutView />} />
         </Routes>
       </div>
     </>
