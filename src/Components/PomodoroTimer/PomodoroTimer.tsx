@@ -179,6 +179,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       active: false,
     });
     if (this.targetInput.current) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.targetInput.current!.value = '';
       this.targetInput.current?.toggleDisable();
     }
