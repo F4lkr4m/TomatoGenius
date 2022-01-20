@@ -14,16 +14,3 @@
     flex-direction: column;
     row-gap: var(--x16);
 }
-
-.todo-list__task {
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--x6);
-}
-
-.todo-list__button-group {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: var(--x6);
-}
