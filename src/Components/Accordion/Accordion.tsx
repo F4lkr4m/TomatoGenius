@@ -48,8 +48,8 @@ class Accordion extends React.Component<AccordionProps> {
             <Fonts type="p" secondary={true} text={'Описание задачи'} />
           </li>
           <li className="accordion__list-item">
-            <Fonts type="h5" text="Название задачи" />
-            <Fonts type="p" secondary={true} text={'Описание задачи'} />
+            <Fonts type="h5" lineThrough={true} text="Название задачи" />
+            <Fonts type="p" lineThrough={true} secondary={true} text={'Описание задачи'} />
           </li>
         </ul>
       </div>

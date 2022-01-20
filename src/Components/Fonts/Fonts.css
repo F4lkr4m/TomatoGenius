@@ -44,3 +44,7 @@ p {
 .font--secondary {
     color: var(--secondaryTextColor);
 }
+
+.font_line-through {
+    text-decoration: line-through;
+}
