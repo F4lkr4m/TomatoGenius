@@ -35,6 +35,7 @@
   flex-direction: column;
   row-gap: var(--x10);
   margin: 0;
+  padding-left: var(--x4);
 
   transition: max-height var(--hideAccordionAnimationTime) ease;
 }

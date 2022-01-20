@@ -6,6 +6,7 @@ import { genId } from '../../Utils/IdGenerator';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
+import ToDo from '../ToDo/ToDo';
 
 class ToDoList extends React.Component<unknown> {
   textarea: React.RefObject<TextArea>;
@@ -22,12 +23,15 @@ class ToDoList extends React.Component<unknown> {
   }
 
   private addTask = () => {
-    this.tasks.current?.addItem(
-      <>
-        <Fonts type="h3" text={this.input.current?.value} />
-        <Fonts type="p" text={this.textarea.current?.value} />
-      </>,
-    );
+    const label = this.input.current?.value;
+    const text = this.textarea.current?.value;
+    const index = String(genId.next().value);
+    this.tasks.current?.addItem(<ToDo onClick={this.deleteTask} id={index} key={index} label={label} text={text} />);
+  };
+
+  private deleteTask = (event: React.MouseEvent<HTMLDivElement>) => {
+    const id = event.currentTarget.id;
+    this.tasks.current?.deleteItem(id);
   };
 
   render(): React.ReactNode {
