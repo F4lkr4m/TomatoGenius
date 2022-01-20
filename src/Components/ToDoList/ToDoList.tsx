@@ -9,14 +9,25 @@ import TextArea from '../TextArea/TextArea';
 
 class ToDoList extends React.Component<unknown> {
   textarea: React.RefObject<TextArea>;
+  input: React.RefObject<Input>;
+  tasks: React.RefObject<Accordion>;
+  doneTasks: React.RefObject<Accordion>;
 
   constructor(props: unknown) {
     super(props);
     this.textarea = React.createRef();
+    this.input = React.createRef();
+    this.tasks = React.createRef();
+    this.doneTasks = React.createRef();
   }
 
-  private getValueOfTextArea = () => {
-    console.log(this.textarea.current?.value);
+  private addTask = () => {
+    this.tasks.current?.addItem(
+      <>
+        <Fonts type="h3" text={this.input.current?.value} />
+        <Fonts type="p" text={this.textarea.current?.value} />
+      </>,
+    );
   };
 
   render(): React.ReactNode {
@@ -24,13 +35,17 @@ class ToDoList extends React.Component<unknown> {
       <div className="todo-list">
         <Fonts type="h2" text="Задачи" />
         <div className="todo-list__list">
-          <Accordion label="Задачи" items={[<Fonts key={String(genId.next())} type="h1" text="kek" />]} />
-          <Accordion label="Сделано" />
+          <Accordion
+            ref={this.tasks}
+            label="Задачи"
+            items={[<Fonts key={String(genId.next())} type="h1" text="kek" />]}
+          />
+          <Accordion ref={this.doneTasks} label="Сделано" />
         </div>
         <div className="todo-list__form">
-          <Input type="text" placeholder="Название задачи" />
-          <TextArea ref={this.textarea} />
-          <Button onClick={this.getValueOfTextArea} type="filled" wide={true} label="Добавить" />
+          <Input ref={this.input} type="text" placeholder="Название задачи" />
+          <TextArea ref={this.textarea} placeholder="Описание задачи" />
+          <Button onClick={this.addTask} type="filled" wide={true} label="Добавить" />
         </div>
       </div>
     );

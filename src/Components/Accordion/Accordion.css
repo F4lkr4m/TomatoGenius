@@ -1,4 +1,8 @@
 .accordion {
+  --arrowSpinAnimationTime: 0.7s;
+  --hideAccordionAnimationTime: 0.3s;
+  --accrodionMaxHeight: 3000px;
+
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -15,12 +19,12 @@
   height: var(--x10);
   width: var(--x10);
   transform: rotate(-90deg);
-  transition: transform 0.7s ease;
+  transition: transform var(--arrowSpinAnimationTime) ease;
 }
 
 .arrow-rotate {
   transform: rotate(0deg);
-  transition: transform 0.7s ease;
+  transition: transform var(--arrowSpinAnimationTime) ease;
 }
 
 .accordion__list {
@@ -32,11 +36,11 @@
   row-gap: var(--x10);
   margin: 0;
 
-  transition: max-height 0.3s ease;
+  transition: max-height var(--hideAccordionAnimationTime) ease;
 }
 
 .accordion__list--opened {
-  max-height: 3000px;
+  max-height: var(--accrodionMaxHeight);
 }
 
 .accordion__list li {
