@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import './Accordion.css';
 import arrowSvg from './arrow.svg';
 import Fonts from '../Fonts/Fonts';
 
 interface AccordionProps {
   label?: string;
-  items?: Array<ReactNode>;
+  items?: Array<ReactElement>;
 }
 
 class Accordion extends React.Component<AccordionProps, AccordionProps> {
@@ -20,7 +20,7 @@ class Accordion extends React.Component<AccordionProps, AccordionProps> {
     this.accordion = React.createRef();
   }
 
-  addItem(item: ReactNode | HTMLElement) {
+  addItem(item: ReactElement) {
     const newItems = this.state.items;
     newItems?.push(item);
     this.setState({
@@ -38,6 +38,26 @@ class Accordion extends React.Component<AccordionProps, AccordionProps> {
     const list = this.accordion.current?.querySelector('.accordion__list');
     list?.classList.toggle('accordion__list--opened');
   };
+
+  deleteItem(id: React.Key): boolean {
+    const foundItem = this.state.items?.find((itemId) => {
+      if (itemId?.key) {
+        return itemId.key === id;
+      }
+      return false;
+    });
+    if (foundItem) {
+      const newItems = this.state.items?.filter((item) => {
+        return item !== foundItem;
+      });
+      this.setState({
+        items: newItems,
+      });
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   render() {
     return (
