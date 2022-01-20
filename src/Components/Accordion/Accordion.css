@@ -15,20 +15,28 @@
   height: var(--x10);
   width: var(--x10);
   transform: rotate(-90deg);
-  transition: transform 0.5s ease;
+  transition: transform 0.7s ease;
 }
 
 .arrow-rotate {
   transform: rotate(0deg);
-  transition: transform 0.5s ease;
+  transition: transform 0.7s ease;
 }
 
 .accordion__list {
   display: flex;
+  max-height: 0px;
+  overflow-y: hidden;
   width: 100%;
   flex-direction: column;
   row-gap: var(--x10);
   margin: 0;
+
+  transition: max-height 0.3s ease;
+}
+
+.accordion__list--opened {
+  max-height: 3000px;
 }
 
 .accordion__list li {
