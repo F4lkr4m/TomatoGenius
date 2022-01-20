@@ -17,8 +17,17 @@ class TextArea extends React.Component<TextAreaProps> {
     return <textarea ref={this.textarea} className="textarea" placeholder={this.props.placeholder}></textarea>;
   }
 
-  get value() {
-    return this.textarea.current?.value;
+  get value(): string {
+    if (this.textarea.current) {
+      return this.textarea.current?.value;
+    }
+    return '';
+  }
+
+  set value(value: string) {
+    if (this.textarea.current) {
+      this.textarea.current.value = value;
+    }
   }
 }
 

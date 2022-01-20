@@ -1,7 +1,7 @@
 import React from 'react';
+import { genId } from '../../Utils/IdGenerator';
 import './Accordion.css';
 import arrowSvg from './arrow.svg';
-import Fonts from '../Fonts/Fonts';
 
 interface AccordionProps {
   label?: string;
@@ -14,7 +14,7 @@ class Accordion extends React.Component<AccordionProps, AccordionProps> {
   constructor(props: AccordionProps) {
     super(props);
     this.state = {
-      items: this.props.items,
+      items: this.props.items ? this.props.items : [],
       label: this.props.label,
     };
     this.accordion = React.createRef();
@@ -69,19 +69,11 @@ class Accordion extends React.Component<AccordionProps, AccordionProps> {
         <ul className="accordion__list">
           {this.state.items?.map((item) => {
             return (
-              <li key="2" className="accordion__list-item">
+              <li key={String(genId.next().value)} className="accordion__list-item">
                 {item}
               </li>
             );
           })}
-          <li className="accordion__list-item">
-            <Fonts type="h5" text="Название задачи" />
-            <Fonts type="p" secondary={true} text={'Описание задачи'} />
-          </li>
-          <li className="accordion__list-item">
-            <Fonts type="h5" lineThrough={true} text="Название задачи" />
-            <Fonts type="p" lineThrough={true} secondary={true} text={'Описание задачи'} />
-          </li>
         </ul>
       </div>
     );

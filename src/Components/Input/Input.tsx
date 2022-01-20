@@ -16,7 +16,16 @@ class Input extends React.Component<InputProps> {
   }
 
   get value() {
-    return this.input.current?.value;
+    if (this.input.current) {
+      return this.input.current?.value;
+    }
+    return '';
+  }
+
+  set value(value: string) {
+    if (this.input.current) {
+      this.input.current.value = value;
+    }
   }
 
   render(): React.ReactNode {
