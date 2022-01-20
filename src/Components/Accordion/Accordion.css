@@ -25,7 +25,7 @@
 
 .accordion__list {
   display: flex;
-  max-height: 3000px;
+  max-height: 0;
   overflow-y: hidden;
   width: 100%;
   flex-direction: column;

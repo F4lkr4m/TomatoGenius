@@ -5,8 +5,20 @@ import Accordion from '../Accordion/Accordion';
 import { genId } from '../../Utils/IdGenerator';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import TextArea from '../TextArea/TextArea';
 
 class ToDoList extends React.Component<unknown> {
+  textarea: React.RefObject<TextArea>;
+
+  constructor(props: unknown) {
+    super(props);
+    this.textarea = React.createRef();
+  }
+
+  private getValueOfTextArea = () => {
+    console.log(this.textarea.current?.value);
+  };
+
   render(): React.ReactNode {
     return (
       <div className="todo-list">
@@ -17,8 +29,8 @@ class ToDoList extends React.Component<unknown> {
         </div>
         <div className="todo-list__form">
           <Input type="text" placeholder="Название задачи" />
-          <textarea></textarea>
-          <Button type="filled" wide={true} label="Добавить" />
+          <TextArea ref={this.textarea} />
+          <Button onClick={this.getValueOfTextArea} type="filled" wide={true} label="Добавить" />
         </div>
       </div>
     );

@@ -1,0 +1,16 @@
+.textarea {
+  --textAreaBorderRadius: var(--x4);
+
+  font-family: 'Gilroy';
+  font-size: var(--x8);
+
+  border-radius: var(--textAreaBorderRadius);
+
+  background-color: rgba(0, 0, 0, 0.1);
+  resize: none;
+  outline: none;
+  border: none;
+
+  box-sizing: border-box;
+  padding: var(--x6);
+}
