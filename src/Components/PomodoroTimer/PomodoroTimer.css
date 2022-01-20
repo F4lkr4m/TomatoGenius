@@ -22,6 +22,8 @@
 .pomodoro-timer__time {
     font-family: 'Gilroy';
     font-size: 124px;
+
+    color: var(--textColor);
 }
 
 .pomodoro-timer__menu {

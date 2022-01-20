@@ -3,6 +3,8 @@ import './Header.css';
 import Button from '../Button/Button';
 import { Link } from 'react-router-dom';
 import { constants } from '../../Utils/Constants';
+import moonSvg from '../../Assets/moon.svg';
+import sunSvg from '../../Assets/sun.svg';
 
 interface HeaderProps {
   userAuth: boolean;
@@ -10,10 +12,30 @@ interface HeaderProps {
   logoText?: string;
 }
 
-class Header extends React.Component<HeaderProps> {
+interface HeaderI {
+  themeIcon: string;
+}
+
+class Header extends React.Component<HeaderProps, HeaderI> {
   constructor(props: HeaderProps) {
     super(props);
+    this.state = {
+      themeIcon: sunSvg,
+    };
   }
+
+  private toggleTheme = () => {
+    if (this.state.themeIcon === sunSvg) {
+      this.setState({
+        themeIcon: moonSvg,
+      });
+    } else {
+      this.setState({
+        themeIcon: sunSvg,
+      });
+    }
+    document.querySelector('body')?.classList.toggle('dark');
+  };
 
   render() {
     return (
@@ -27,6 +49,7 @@ class Header extends React.Component<HeaderProps> {
           </Link>
         </div>
         <nav className="header__nav">
+          <Button onClick={this.toggleTheme} icon={this.state.themeIcon} />
           <>
             <Link to={constants.urls.about}>
               <Button label="О нас" />

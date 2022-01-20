@@ -5,6 +5,7 @@
   font-size: var(--x8);
 
   border-radius: var(--textAreaBorderRadius);
+  color: var(--textColor);
 
   background-color: rgba(0, 0, 0, 0.1);
   resize: none;
