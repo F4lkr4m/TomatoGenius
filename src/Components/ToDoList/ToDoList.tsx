@@ -6,29 +6,24 @@ import { genId } from '../../Utils/IdGenerator';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
-import ToDo, { ToDoProps } from '../ToDo/ToDo';
+import ToDo from '../ToDo/ToDo';
 
 interface ToDoListI {
   textareaValue: string;
   inputValue: string;
+  tasks: Array<JSX.Element>;
+  doneTasks: Array<JSX.Element>;
 }
 
 class ToDoList extends React.Component<unknown, ToDoListI> {
-  tasksAccordion: React.RefObject<Accordion>;
-  doneTasksAccordion: React.RefObject<Accordion>;
-  tasks: Map<string, ToDoProps>;
-  doneTasks: Map<string, ToDoProps>;
-
   constructor(props: unknown) {
     super(props);
-    this.tasksAccordion = React.createRef();
-    this.doneTasksAccordion = React.createRef();
-    this.tasks = new Map();
-    this.doneTasks = new Map();
 
     this.state = {
       textareaValue: '',
       inputValue: '',
+      tasks: [],
+      doneTasks: [],
     };
   }
 
@@ -36,18 +31,14 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     const label = this.state.inputValue;
     const text = this.state.textareaValue;
     const index = String(genId.next().value);
-    this.tasks.set(index, {
-      id: index,
-      label: label,
-      text: text,
-    });
-    this.tasksAccordion.current?.addItem(
-      <ToDo onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
+    const newTasksArray = this.state.tasks;
+    newTasksArray.push(
+      <ToDo deleted={false} onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
     );
-
     this.setState({
       textareaValue: '',
       inputValue: '',
+      tasks: newTasksArray,
     });
   };
 
@@ -55,14 +46,21 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     const { currentTarget } = event;
     const id = currentTarget.id;
 
-    this.tasksAccordion.current?.deleteItem(id);
-    const deletedTask = this.tasks.get(id);
-    this.tasks.delete(id);
-    if (deletedTask) {
-      this.doneTasksAccordion.current?.addItem(
-        <ToDo id={id} deleted={true} text={deletedTask.text} label={deletedTask.label} />,
-      );
+    const newTasksArray = this.state.tasks.filter((task) => {
+      return task.key !== id;
+    });
+    const taskForDelete = this.state.tasks.find((task) => {
+      return task.key === id;
+    });
+    const newDoneTasksArray = this.state.doneTasks;
+    if (taskForDelete) {
+      newDoneTasksArray.push(taskForDelete);
     }
+
+    this.setState({
+      tasks: newTasksArray,
+      doneTasks: newDoneTasksArray,
+    });
   };
 
   private textAreaChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -82,8 +80,8 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
       <div className="todo-list">
         <Fonts type="h2" text="Задачи" />
         <div className="todo-list__list">
-          <Accordion ref={this.tasksAccordion} label="Задачи" />
-          <Accordion ref={this.doneTasksAccordion} label="Сделано" />
+          <Accordion items={this.state.tasks} label="Задачи" />
+          <Accordion items={this.state.doneTasks} label="Сделано" />
         </div>
         <div className="todo-list__form">
           <Input

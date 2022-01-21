@@ -8,24 +8,16 @@ interface AccordionProps {
   items?: Array<JSX.Element>;
 }
 
-class Accordion extends React.Component<AccordionProps, AccordionProps> {
-  accordion: React.RefObject<HTMLDivElement>;
+interface AccordionState {
+  accordionOpened: boolean;
+}
 
+class Accordion extends React.Component<AccordionProps, AccordionState> {
   constructor(props: AccordionProps) {
     super(props);
     this.state = {
-      items: this.props.items ? this.props.items : [],
-      label: this.props.label,
+      accordionOpened: false,
     };
-    this.accordion = React.createRef();
-  }
-
-  addItem(item: JSX.Element) {
-    const newItems = this.state.items;
-    newItems?.push(item);
-    this.setState({
-      items: newItems,
-    });
   }
 
   private toggle = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,39 +27,20 @@ class Accordion extends React.Component<AccordionProps, AccordionProps> {
       arrow.classList.toggle('arrow-rotate');
     }
 
-    const list = this.accordion.current?.querySelector('.accordion__list');
-    list?.classList.toggle('accordion__list--opened');
-  };
-
-  deleteItem(id: string): boolean {
-    const foundItem = this.state.items?.find((itemId) => {
-      if (itemId?.key) {
-        return itemId.key === id;
-      }
-      return false;
+    this.setState({
+      accordionOpened: !this.state.accordionOpened,
     });
-    if (foundItem) {
-      const newItems = this.state.items?.filter((item) => {
-        return item !== foundItem;
-      });
-      this.setState({
-        items: newItems,
-      });
-      return true;
-    } else {
-      return false;
-    }
-  }
+  };
 
   render() {
     return (
-      <div ref={this.accordion} className="accordion">
+      <div className="accordion">
         <button onClick={this.toggle} className={'button accordion-button'}>
           {this.props.label}
           <img src={arrowSvg} className="accordion-button__arrow" alt="arrow img" />
         </button>
-        <ul className="accordion__list">
-          {this.state.items?.map((item) => {
+        <ul className={`accordion__list ${this.state.accordionOpened ? 'accordion__list--opened' : ''}`}>
+          {this.props.items?.map((item) => {
             return (
               <li key={String(genId.next().value)} className="accordion__list-item">
                 {item}
