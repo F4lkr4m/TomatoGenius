@@ -2,25 +2,24 @@ import React from 'react';
 import Fonts from '../Fonts/Fonts';
 import './Snackbar.css';
 
-interface SnackbarProps {
-  text: string;
-}
-
 interface SnackbarState {
   opened: boolean;
   timerToClose: NodeJS.Timeout | undefined;
 }
 
-class Snackbar extends React.Component<SnackbarProps, SnackbarState> {
-  constructor(props: SnackbarProps) {
+class Snackbar extends React.Component<unknown, SnackbarState> {
+  message: string;
+  constructor(props: unknown) {
     super(props);
     this.state = {
       opened: false,
       timerToClose: undefined,
     };
+    this.message = '';
   }
 
-  open() {
+  open(message: string) {
+    this.message = message;
     if (this.state.timerToClose) {
       clearTimeout(this.state.timerToClose);
     }
@@ -37,7 +36,7 @@ class Snackbar extends React.Component<SnackbarProps, SnackbarState> {
   render(): React.ReactNode {
     return (
       <div className={`snackbar ${this.state.opened ? 'snackbar--opened' : 'snackbar--closed'}`}>
-        <Fonts text={this.props.text} secondary={true} type="p" />
+        <Fonts text={this.message} secondary={true} type="p" />
       </div>
     );
   }

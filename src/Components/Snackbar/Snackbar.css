@@ -11,9 +11,11 @@
 
   width: var(--snackbarWidth);
 
-  padding: var(--x4);
+  padding: var(--x6);
 
   background-color: rgba(0, 0, 0, 0.3);
+
+  border-radius: var(--x4);
 }
 
 .snackbar--opened {
