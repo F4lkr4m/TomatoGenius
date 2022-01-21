@@ -1,0 +1,34 @@
+.snackbar {
+  --snackbarWidth: 300px;
+
+  position: fixed;
+
+  visibility: hidden;
+  opacity: 0;
+
+  bottom: 30px;
+  left: calc(50% - (var(--snackbarWidth) / 2));
+
+  width: var(--snackbarWidth);
+
+  padding: var(--x4);
+
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.snackbar--opened {
+  visibility: visible;
+  opacity: 1;
+  animation: snackbar-open 0.5s;
+}
+
+@keyframes snackbar-open {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
