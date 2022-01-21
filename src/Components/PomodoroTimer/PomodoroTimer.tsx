@@ -26,6 +26,8 @@ interface PomodoroState {
   pomodoroNumberCycle: number;
   pomodoroQueue: Array<PomodoroTask>;
   currentTask: PomodoroTask;
+  targetInput: string;
+  targetInputDisabled: boolean;
 }
 
 interface PomodoroTask {
@@ -42,7 +44,6 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
   doneButton: ButtonI;
 
   logger: React.RefObject<PomodoroLogger>;
-  targetInput: React.RefObject<Input>;
 
   constructor() {
     super(null);
@@ -83,7 +84,6 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
         secs: 0,
       });
     }
-    console.log(pomodoroQueue);
 
     this.state = {
       mins: 60,
@@ -97,10 +97,11 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       breakNumber: 0,
       pomodoroQueue: pomodoroQueue,
       currentTask: pomodoroQueue[0],
+      targetInput: '',
+      targetInputDisabled: false,
     };
 
     this.logger = React.createRef();
-    this.targetInput = React.createRef();
   }
 
   private play = () => {
@@ -151,10 +152,12 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       secs: this.state.currentTask.secs,
       id: currentTask === 'pomodoro' ? this.state.pomodoroNumber : this.state.breakNumber,
       status: 'process',
-      target: this.targetInput.current?.value,
+      target: this.state.targetInput,
     });
     if (added) {
-      this.targetInput.current?.toggleDisable();
+      this.setState({
+        targetInputDisabled: !this.state.targetInputDisabled,
+      });
     }
   };
 
@@ -162,6 +165,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
     if (this.state.timer) {
       clearInterval(this.state.timer);
     }
+
     let newPomodoroNumber = this.state.pomodoroNumber;
     let newBreakNumber = this.state.breakNumber;
     if (this.state.currentTask.task === 'pomodoro') {
@@ -171,6 +175,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       this.logger.current?.updateLog(this.state.breakNumber, 'break', 'done');
       newBreakNumber += 1;
     }
+
     const nextStateIndex = (newPomodoroNumber + newBreakNumber) % this.state.pomodoroQueue.length;
     const nextState = this.state.pomodoroQueue[nextStateIndex];
     this.setState({
@@ -183,29 +188,14 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       leftButton: this.playButton,
       timer: undefined,
       active: false,
+      targetInput: '',
+      targetInputDisabled: !this.state.targetInputDisabled,
     });
-    if (this.targetInput.current) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.targetInput.current!.value = '';
-      this.targetInput.current?.toggleDisable();
-    }
   };
 
-  private checkEndOfTimer() {
-    if (this.state.mins === 0 && this.state.secs === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   countIteration = () => {
-    console.log(this.state.timer);
     if (!this.state?.timer) {
       return;
-    }
-    if (this.checkEndOfTimer() && this.state.timer) {
-      this.done();
     }
 
     if (this.state.secs === 1 && this.state.mins === 0) {
@@ -214,7 +204,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
 
     let newMins = this.state.mins;
     let newSecs = this.state.secs;
-    if (this.state.secs < 2) {
+    if (this.state.secs === 0) {
       newMins = this.state.mins - 1;
       newSecs = 59;
     } else {
@@ -224,6 +214,12 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
     this.setState({
       mins: newMins,
       secs: newSecs,
+    });
+  };
+
+  private targetInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      targetInput: event.target.value,
     });
   };
 
@@ -248,7 +244,13 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
           </div>
           <menu className="pomodoro-timer__menu">
             <Fonts type="h4" text={taskLabel} />
-            <Input ref={this.targetInput} type="text" placeholder="Цель помидора" />
+            <Input
+              value={this.state.targetInput}
+              disabled={this.state.targetInputDisabled}
+              onChange={this.targetInputOnChange}
+              type="text"
+              placeholder="Цель помидора"
+            />
             <div className="pomodoro-timer__control">
               <Button
                 onClick={this.state.leftButton.onClick}

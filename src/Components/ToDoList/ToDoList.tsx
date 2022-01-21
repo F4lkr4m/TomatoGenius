@@ -14,7 +14,6 @@ interface ToDoListI {
 }
 
 class ToDoList extends React.Component<unknown, ToDoListI> {
-  input: React.RefObject<Input>;
   tasksAccordion: React.RefObject<Accordion>;
   doneTasksAccordion: React.RefObject<Accordion>;
   tasks: Map<string, ToDoProps>;
@@ -22,7 +21,6 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
 
   constructor(props: unknown) {
     super(props);
-    this.input = React.createRef();
     this.tasksAccordion = React.createRef();
     this.doneTasksAccordion = React.createRef();
     this.tasks = new Map();
@@ -35,7 +33,7 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
   }
 
   private addTask = () => {
-    const label = this.input.current?.value;
+    const label = this.state.inputValue;
     const text = this.state.textareaValue;
     const index = String(genId.next().value);
     this.tasks.set(index, {
@@ -46,12 +44,11 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     this.tasksAccordion.current?.addItem(
       <ToDo onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
     );
-    if (this.input.current) {
-      this.input.current.value = '';
-      this.setState({
-        textareaValue: '',
-      });
-    }
+
+    this.setState({
+      textareaValue: '',
+      inputValue: '',
+    });
   };
 
   private deleteTask = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -74,6 +71,12 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     });
   };
 
+  private inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      inputValue: event.target.value,
+    });
+  };
+
   render(): React.ReactNode {
     return (
       <div className="todo-list">
@@ -83,7 +86,12 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
           <Accordion ref={this.doneTasksAccordion} label="Сделано" />
         </div>
         <div className="todo-list__form">
-          <Input ref={this.input} type="text" placeholder="Название задачи" />
+          <Input
+            value={this.state.inputValue}
+            onChange={this.inputChangeHandler}
+            type="text"
+            placeholder="Название задачи"
+          />
           <TextArea
             value={this.state.textareaValue}
             onChange={this.textAreaChangeHandler}
