@@ -73,12 +73,17 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
         mins: 60,
         secs: 0,
       });
+      let breakTime = 15;
+      if (i === 3) {
+        breakTime = 30;
+      }
+      pomodoroQueue.push({
+        task: 'break',
+        mins: breakTime,
+        secs: 0,
+      });
     }
-    pomodoroQueue.push({
-      task: 'break',
-      mins: 15,
-      secs: 0,
-    });
+    console.log(pomodoroQueue);
 
     this.state = {
       mins: 60,
@@ -172,6 +177,7 @@ class PomodoroTimer extends React.Component<unknown, PomodoroState> {
       mins: nextState.mins,
       secs: nextState.secs,
       pomodoroNumber: newPomodoroNumber,
+      breakNumber: newBreakNumber,
       currentTask: nextState,
       rightButton: this.stopButton,
       leftButton: this.playButton,
