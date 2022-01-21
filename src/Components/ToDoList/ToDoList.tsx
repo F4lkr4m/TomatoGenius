@@ -8,8 +8,12 @@ import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
 import ToDo, { ToDoProps } from '../ToDo/ToDo';
 
-class ToDoList extends React.Component<unknown> {
-  textarea: React.RefObject<TextArea>;
+interface ToDoListI {
+  textareaValue: string;
+  inputValue: string;
+}
+
+class ToDoList extends React.Component<unknown, ToDoListI> {
   input: React.RefObject<Input>;
   tasksAccordion: React.RefObject<Accordion>;
   doneTasksAccordion: React.RefObject<Accordion>;
@@ -18,17 +22,21 @@ class ToDoList extends React.Component<unknown> {
 
   constructor(props: unknown) {
     super(props);
-    this.textarea = React.createRef();
     this.input = React.createRef();
     this.tasksAccordion = React.createRef();
     this.doneTasksAccordion = React.createRef();
     this.tasks = new Map();
     this.doneTasks = new Map();
+
+    this.state = {
+      textareaValue: '',
+      inputValue: '',
+    };
   }
 
   private addTask = () => {
     const label = this.input.current?.value;
-    const text = this.textarea.current?.value;
+    const text = this.state.textareaValue;
     const index = String(genId.next().value);
     this.tasks.set(index, {
       id: index,
@@ -38,9 +46,11 @@ class ToDoList extends React.Component<unknown> {
     this.tasksAccordion.current?.addItem(
       <ToDo onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
     );
-    if (this.input.current && this.textarea.current) {
+    if (this.input.current) {
       this.input.current.value = '';
-      this.textarea.current.value = '';
+      this.setState({
+        textareaValue: '',
+      });
     }
   };
 
@@ -58,6 +68,12 @@ class ToDoList extends React.Component<unknown> {
     }
   };
 
+  private textAreaChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({
+      textareaValue: event.target.value,
+    });
+  };
+
   render(): React.ReactNode {
     return (
       <div className="todo-list">
@@ -68,7 +84,11 @@ class ToDoList extends React.Component<unknown> {
         </div>
         <div className="todo-list__form">
           <Input ref={this.input} type="text" placeholder="Название задачи" />
-          <TextArea ref={this.textarea} placeholder="Описание задачи" />
+          <TextArea
+            value={this.state.textareaValue}
+            onChange={this.textAreaChangeHandler}
+            placeholder="Описание задачи"
+          />
           <Button onClick={this.addTask} type="filled" wide={true} label="Добавить" />
         </div>
       </div>

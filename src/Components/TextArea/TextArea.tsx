@@ -1,34 +1,21 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import './TextArea.css';
 
 interface TextAreaProps {
   placeholder?: string;
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  value?: string;
 }
 
-class TextArea extends React.Component<TextAreaProps> {
-  textarea: React.RefObject<HTMLTextAreaElement>;
-
-  constructor(props: TextAreaProps) {
-    super(props);
-    this.textarea = React.createRef();
-  }
-
-  render(): React.ReactNode {
-    return <textarea ref={this.textarea} className="textarea" placeholder={this.props.placeholder}></textarea>;
-  }
-
-  get value(): string {
-    if (this.textarea.current) {
-      return this.textarea.current?.value;
-    }
-    return '';
-  }
-
-  set value(value: string) {
-    if (this.textarea.current) {
-      this.textarea.current.value = value;
-    }
-  }
-}
+const TextArea = (props: TextAreaProps) => {
+  return (
+    <textarea
+      value={props.value}
+      className="textarea"
+      onChange={props.onChange}
+      placeholder={props.placeholder}
+    ></textarea>
+  );
+};
 
 export default TextArea;

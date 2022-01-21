@@ -8,6 +8,7 @@ interface ButtonProps {
   type?: 'hover' | 'transparent' | 'filled';
   centered?: boolean;
   onClick?: () => void;
+  onKeyPress?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
@@ -25,6 +26,7 @@ const Button = (props: ButtonProps) => {
         `${props.centered ? ' button--centered' : ''}`
       }
       onClick={props.onClick}
+      onKeyPress={props.onKeyPress}
     >
       {props.icon ? <img className={'button__icon'} src={props.icon} /> : ''}
       {props.label}
