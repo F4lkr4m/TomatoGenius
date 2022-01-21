@@ -15,6 +15,12 @@ interface ToDoListI {
   doneTasks: Array<JSX.Element>;
 }
 
+// Костыльное решение задачи о зачеркнутом тексте...
+// Ну зато хоть на React.CSSProperties посмотрел
+const deletedTextDecoration: React.CSSProperties = {
+  textDecoration: 'line-through',
+};
+
 class ToDoList extends React.Component<unknown, ToDoListI> {
   constructor(props: unknown) {
     super(props);
@@ -54,7 +60,7 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     });
     const newDoneTasksArray = this.state.doneTasks;
     if (taskForDelete) {
-      newDoneTasksArray.push(taskForDelete);
+      newDoneTasksArray.push(<div style={deletedTextDecoration}>{taskForDelete}</div>);
     }
 
     this.setState({
