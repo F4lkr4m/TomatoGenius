@@ -15,6 +15,12 @@ interface ToDoListI {
   doneTasks: Array<JSX.Element>;
 }
 
+interface TaskProps {
+  label: string;
+  text: string;
+  id: string;
+}
+
 // Костыльное решение задачи о зачеркнутом тексте...
 // Ну зато хоть на React.CSSProperties посмотрел
 const deletedTextDecoration: React.CSSProperties = {
@@ -22,6 +28,8 @@ const deletedTextDecoration: React.CSSProperties = {
 };
 
 class ToDoList extends React.Component<unknown, ToDoListI> {
+  tasksProps: Array<TaskProps>;
+  deletedTasksProps: Array<TaskProps>;
   constructor(props: unknown) {
     super(props);
 
@@ -31,6 +39,63 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
       tasks: [],
       doneTasks: [],
     };
+    this.tasksProps = [];
+    this.deletedTasksProps = [];
+  }
+
+  // На моменте локал стораджа тут помойка ппц, лучше не смотреть сюда
+  // А вообще тут промах был по архитектуре, наверное бросать внутрь
+  // Аккордиона верстку не самая лучшая мысль, даже если брать компоненты
+  componentDidMount() {
+    const localTasks = localStorage.getItem('tasks');
+    if (localTasks) {
+      const parsedTasks: Array<TaskProps> = JSON.parse(localTasks);
+      const newTasksArray: Array<JSX.Element> = [];
+      parsedTasks.forEach((task) => {
+        const label = task.label;
+        const text = task.text;
+        const index = task.id;
+        this.tasksProps.push({
+          label: label,
+          text: text,
+          id: index,
+        });
+        newTasksArray.push(
+          <ToDo deleted={false} onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
+        );
+      });
+      this.setState({
+        textareaValue: '',
+        inputValue: '',
+        tasks: newTasksArray,
+      });
+    } else {
+      localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
+    }
+
+    const localDeletedTasks = localStorage.getItem('deletedTasks');
+    if (localDeletedTasks) {
+      const parsedDeletedTasks: Array<TaskProps> = JSON.parse(localDeletedTasks);
+      const newDoneTasksArray: Array<JSX.Element> = [];
+      parsedDeletedTasks.forEach((task) => {
+        const label = task.label;
+        const text = task.text;
+        const index = task.id;
+        this.deletedTasksProps.push({
+          label: label,
+          text: text,
+          id: index,
+        });
+        newDoneTasksArray.push(<ToDo deleted={true} id={index} key={index} label={label} text={text} />);
+      });
+      this.setState({
+        textareaValue: '',
+        inputValue: '',
+        doneTasks: newDoneTasksArray,
+      });
+    } else {
+      localStorage.setItem('deletedTasks', JSON.stringify(this.deletedTasksProps));
+    }
   }
 
   private addTask = () => {
@@ -46,6 +111,13 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
       inputValue: '',
       tasks: newTasksArray,
     });
+    this.tasksProps.push({
+      label: label,
+      text: text,
+      id: index,
+    });
+    localStorage.removeItem('tasks');
+    localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
   };
 
   private deleteTask = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -67,6 +139,25 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
       tasks: newTasksArray,
       doneTasks: newDoneTasksArray,
     });
+    const founded = this.tasksProps.find((task) => {
+      return task.id === id;
+    });
+    console.log(this.tasksProps);
+    this.tasksProps = this.tasksProps.filter((task) => {
+      return task.id !== id;
+    });
+    console.log(this.tasksProps);
+    if (founded) {
+      this.deletedTasksProps.push({
+        label: founded.label,
+        text: founded.text,
+        id: founded.id,
+      });
+      localStorage.removeItem('tasks');
+      localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
+      localStorage.removeItem('deletedTasks');
+      localStorage.setItem('deletedTasks', JSON.stringify(this.deletedTasksProps));
+    }
   };
 
   private textAreaChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

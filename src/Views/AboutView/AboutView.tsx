@@ -8,6 +8,7 @@ class AboutView extends React.Component<unknown> {
     return (
       <div className="about-view__layout">
         <Fonts type="h3" text={constants.aboutDescr} />
+        <Fonts type="h3" text={constants.aboutTechnics} />
       </div>
     );
   }
