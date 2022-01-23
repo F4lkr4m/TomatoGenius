@@ -7,6 +7,9 @@ import SignView from './Views/SignView/SignView';
 import HomeView from './Views/HomeView/HomeView';
 import AboutView from './Views/AboutView/AboutView';
 import { constants } from './Utils/Constants';
+import Button from './Components/Button/Button';
+import store from './Store/store';
+import { addToDo, toggleToDo } from './Store/ActionCreators/ToDoListActionCreator';
 
 function App() {
   return (
@@ -19,6 +22,18 @@ function App() {
           <Route path={constants.urls.about} element={<AboutView />} />
         </Routes>
       </div>
+      <Button
+        onClick={() => {
+          store.dispatch(
+            addToDo({
+              label: 'keke',
+              text: 'kek',
+              id: 'kek-1',
+            }),
+          );
+        }}
+        label="Click me pls"
+      />
     </>
   );
 }
