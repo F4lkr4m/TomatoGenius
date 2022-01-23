@@ -19,8 +19,14 @@ const initialState = {
 export const ToDoListReducer = (state: State = initialState, action: ToDoAction): State => {
   switch (action.type) {
     case ToDoActionType.ADD_TODO: {
-      console.log('ADDING TODO');
-      return state;
+      const newTodos = state.todos;
+      newTodos.push({
+        completed: false,
+        ...action.payload,
+      });
+      return {
+        todos: newTodos,
+      };
     }
     case ToDoActionType.TOGGLE_TODO: {
       console.log('TOGGLE TODO');

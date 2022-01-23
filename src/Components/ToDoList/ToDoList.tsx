@@ -7,6 +7,8 @@ import Input from '../Input/Input';
 import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
 import ToDo from '../ToDo/ToDo';
+import store from '../../Store/store';
+import { addToDo, toggleToDo } from '../../Store/ActionCreators/ToDoListActionCreator';
 
 interface ToDoListI {
   textareaValue: string;
@@ -47,6 +49,8 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
   // А вообще тут промах был по архитектуре, наверное бросать внутрь
   // Аккордиона верстку не самая лучшая мысль, даже если брать компоненты
   componentDidMount() {
+    store.subscribe(() => console.log(store.getState().todos.todos));
+
     const localTasks = localStorage.getItem('tasks');
     if (localTasks) {
       const parsedTasks: Array<TaskProps> = JSON.parse(localTasks);
@@ -61,7 +65,7 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
           id: index,
         });
         newTasksArray.push(
-          <ToDo deleted={false} onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
+          <ToDo deleted={false} onClick={this.toggleToDo} id={index} key={index} label={label} text={text} />,
         );
       });
       this.setState({
@@ -98,13 +102,25 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     }
   }
 
+  componentWillUnmount() {
+    // unsubscribe
+  }
+
   private addTask = () => {
+    store.dispatch(
+      addToDo({
+        label: this.state.inputValue,
+        text: this.state.textareaValue,
+        id: String(genId.next().value),
+      }),
+    );
+
     const label = this.state.inputValue;
     const text = this.state.textareaValue;
     const index = String(genId.next().value);
     const newTasksArray = this.state.tasks;
     newTasksArray.push(
-      <ToDo deleted={false} onClick={this.deleteTask} id={index} key={index} label={label} text={text} />,
+      <ToDo deleted={false} onClick={this.toggleToDo} id={index} key={index} label={label} text={text} />,
     );
     this.setState({
       textareaValue: '',
@@ -118,6 +134,12 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     });
     localStorage.removeItem('tasks');
     localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
+  };
+
+  private toggleToDo = (event: React.MouseEvent<HTMLDivElement>) => {
+    const { currentTarget } = event;
+    const id = currentTarget.id;
+    store.dispatch(toggleToDo(id));
   };
 
   private deleteTask = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -142,11 +164,9 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
     const founded = this.tasksProps.find((task) => {
       return task.id === id;
     });
-    console.log(this.tasksProps);
     this.tasksProps = this.tasksProps.filter((task) => {
       return task.id !== id;
     });
-    console.log(this.tasksProps);
     if (founded) {
       this.deletedTasksProps.push({
         label: founded.label,
