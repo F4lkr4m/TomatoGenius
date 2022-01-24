@@ -9,7 +9,7 @@ export interface ToDoI {
   completed: boolean;
 }
 
-export interface State {
+interface State {
   todos: Array<ToDoI>;
 }
 

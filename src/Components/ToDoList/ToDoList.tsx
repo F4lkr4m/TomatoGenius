@@ -39,7 +39,6 @@ class ToDoList extends React.Component<ToDoListProps, ToDoListI> {
       this.setState({
         tasks: this.props.store.getState().todos.todos,
       });
-      console.log(this.props.store.getState().todos.todos);
     });
   }
 
