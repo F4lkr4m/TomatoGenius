@@ -29,7 +29,7 @@ class ToDoList extends React.Component<ToDoListProps, ToDoListI> {
     this.state = {
       textareaValue: '',
       inputValue: '',
-      tasks: [],
+      tasks: this.props.store.getState().todos.todos,
     };
     this.unsub = undefined;
   }
@@ -39,6 +39,7 @@ class ToDoList extends React.Component<ToDoListProps, ToDoListI> {
       this.setState({
         tasks: this.props.store.getState().todos.todos,
       });
+      console.log(this.props.store.getState().todos.todos);
     });
   }
 

@@ -1,3 +1,4 @@
+import { genId } from '../../Utils/IdGenerator';
 import { ToDoAction } from '../ActionCreators/ToDoListActionCreator';
 import { ToDoActionType } from '../Actions/ToDoListActions';
 
@@ -12,11 +13,24 @@ export interface State {
   todos: Array<ToDoI>;
 }
 
-const initialState = {
-  todos: [],
+const todos = localStorage.getItem('todos');
+let todosInitial: Array<ToDoI> = [];
+
+if (todos) {
+  todosInitial = JSON.parse(todos);
+  todosInitial.map((todo) => {
+    return {
+      ...todo,
+      id: genId.next().value,
+    };
+  });
+}
+
+export const TodosInitialState = {
+  todos: todosInitial,
 };
 
-export const ToDoListReducer = (state: State = initialState, action: ToDoAction): State => {
+export const ToDoListReducer = (state: State = TodosInitialState, action: ToDoAction): State => {
   switch (action.type) {
     case ToDoActionType.ADD_TODO: {
       const newTodos = state.todos;
@@ -24,6 +38,7 @@ export const ToDoListReducer = (state: State = initialState, action: ToDoAction)
         completed: false,
         ...action.payload,
       });
+      localStorage['todos'] = JSON.stringify(newTodos);
       return {
         todos: newTodos,
       };
@@ -38,6 +53,7 @@ export const ToDoListReducer = (state: State = initialState, action: ToDoAction)
         }
         return todo;
       });
+      localStorage['todos'] = JSON.stringify(newTodos);
       return {
         todos: newTodos,
       };
