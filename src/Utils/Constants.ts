@@ -14,4 +14,5 @@ export const constants = {
     home: '/',
     sign: '/sign',
   },
+  githubUrl: 'https://github.com/F4lkr4m',
 };

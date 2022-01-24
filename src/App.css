@@ -86,6 +86,12 @@ a {
   fill: var(--colorText);
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .app {
   --appPaddingLR: 10%;
   --appPaddingTB: var(--x14);

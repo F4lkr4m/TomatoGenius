@@ -7,6 +7,7 @@ import SignView from './Views/SignView/SignView';
 import HomeView from './Views/HomeView/HomeView';
 import AboutView from './Views/AboutView/AboutView';
 import { constants } from './Utils/Constants';
+import Footer from './Components/Footer/Footer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path={constants.urls.about} element={<AboutView />} />
         </Routes>
       </div>
+      <Footer />
     </>
   );
 }
