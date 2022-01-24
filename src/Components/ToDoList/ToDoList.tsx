@@ -6,178 +6,70 @@ import { genId } from '../../Utils/IdGenerator';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
+import store, { RootReducer } from '../../Store/store';
+import { addToDo, ToDoAction, toggleToDo } from '../../Store/ActionCreators/ToDoListActionCreator';
+import { Store, Unsubscribe } from 'redux';
+import { ToDoI } from '../../Store/Reducers/ToDoListReducer';
 import ToDo from '../ToDo/ToDo';
-import store from '../../Store/store';
-import { addToDo, toggleToDo } from '../../Store/ActionCreators/ToDoListActionCreator';
+
+interface ToDoListProps {
+  store: Store<RootReducer, ToDoAction>;
+}
 
 interface ToDoListI {
   textareaValue: string;
   inputValue: string;
-  tasks: Array<JSX.Element>;
-  doneTasks: Array<JSX.Element>;
+  tasks: Array<ToDoI>;
 }
 
-interface TaskProps {
-  label: string;
-  text: string;
-  id: string;
-}
-
-// Костыльное решение задачи о зачеркнутом тексте...
-// Ну зато хоть на React.CSSProperties посмотрел
-const deletedTextDecoration: React.CSSProperties = {
-  textDecoration: 'line-through',
-};
-
-class ToDoList extends React.Component<unknown, ToDoListI> {
-  tasksProps: Array<TaskProps>;
-  deletedTasksProps: Array<TaskProps>;
-  constructor(props: unknown) {
+class ToDoList extends React.Component<ToDoListProps, ToDoListI> {
+  unsub: Unsubscribe | undefined;
+  constructor(props: ToDoListProps) {
     super(props);
-
     this.state = {
       textareaValue: '',
       inputValue: '',
       tasks: [],
-      doneTasks: [],
     };
-    this.tasksProps = [];
-    this.deletedTasksProps = [];
+    this.unsub = undefined;
   }
 
-  // На моменте локал стораджа тут помойка ппц, лучше не смотреть сюда
-  // А вообще тут промах был по архитектуре, наверное бросать внутрь
-  // Аккордиона верстку не самая лучшая мысль, даже если брать компоненты
   componentDidMount() {
-    store.subscribe(() => console.log(store.getState().todos.todos));
-
-    const localTasks = localStorage.getItem('tasks');
-    if (localTasks) {
-      const parsedTasks: Array<TaskProps> = JSON.parse(localTasks);
-      const newTasksArray: Array<JSX.Element> = [];
-      parsedTasks.forEach((task) => {
-        const label = task.label;
-        const text = task.text;
-        const index = task.id;
-        this.tasksProps.push({
-          label: label,
-          text: text,
-          id: index,
-        });
-        newTasksArray.push(
-          <ToDo deleted={false} onClick={this.toggleToDo} id={index} key={index} label={label} text={text} />,
-        );
-      });
+    this.unsub = store.subscribe(() => {
       this.setState({
-        textareaValue: '',
-        inputValue: '',
-        tasks: newTasksArray,
+        tasks: this.props.store.getState().todos.todos,
       });
-    } else {
-      localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
-    }
-
-    const localDeletedTasks = localStorage.getItem('deletedTasks');
-    if (localDeletedTasks) {
-      const parsedDeletedTasks: Array<TaskProps> = JSON.parse(localDeletedTasks);
-      const newDoneTasksArray: Array<JSX.Element> = [];
-      parsedDeletedTasks.forEach((task) => {
-        const label = task.label;
-        const text = task.text;
-        const index = task.id;
-        this.deletedTasksProps.push({
-          label: label,
-          text: text,
-          id: index,
-        });
-        newDoneTasksArray.push(<ToDo deleted={true} id={index} key={index} label={label} text={text} />);
-      });
-      this.setState({
-        textareaValue: '',
-        inputValue: '',
-        doneTasks: newDoneTasksArray,
-      });
-    } else {
-      localStorage.setItem('deletedTasks', JSON.stringify(this.deletedTasksProps));
-    }
+    });
   }
 
   componentWillUnmount() {
-    // unsubscribe
+    if (this.unsub) {
+      this.unsub();
+    }
   }
 
   private addTask = () => {
-    store.dispatch(
-      addToDo({
-        label: this.state.inputValue,
-        text: this.state.textareaValue,
-        id: String(genId.next().value),
-      }),
-    );
-
     const label = this.state.inputValue;
     const text = this.state.textareaValue;
     const index = String(genId.next().value);
-    const newTasksArray = this.state.tasks;
-    newTasksArray.push(
-      <ToDo deleted={false} onClick={this.toggleToDo} id={index} key={index} label={label} text={text} />,
+    store.dispatch(
+      addToDo({
+        label: label,
+        text: text,
+        id: index,
+      }),
     );
+
     this.setState({
-      textareaValue: '',
       inputValue: '',
-      tasks: newTasksArray,
+      textareaValue: '',
     });
-    this.tasksProps.push({
-      label: label,
-      text: text,
-      id: index,
-    });
-    localStorage.removeItem('tasks');
-    localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
   };
 
   private toggleToDo = (event: React.MouseEvent<HTMLDivElement>) => {
     const { currentTarget } = event;
     const id = currentTarget.id;
-    store.dispatch(toggleToDo(id));
-  };
-
-  private deleteTask = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { currentTarget } = event;
-    const id = currentTarget.id;
-
-    const newTasksArray = this.state.tasks.filter((task) => {
-      return task.key !== id;
-    });
-    const taskForDelete = this.state.tasks.find((task) => {
-      return task.key === id;
-    });
-    const newDoneTasksArray = this.state.doneTasks;
-    if (taskForDelete) {
-      newDoneTasksArray.push(<div style={deletedTextDecoration}>{taskForDelete}</div>);
-    }
-
-    this.setState({
-      tasks: newTasksArray,
-      doneTasks: newDoneTasksArray,
-    });
-    const founded = this.tasksProps.find((task) => {
-      return task.id === id;
-    });
-    this.tasksProps = this.tasksProps.filter((task) => {
-      return task.id !== id;
-    });
-    if (founded) {
-      this.deletedTasksProps.push({
-        label: founded.label,
-        text: founded.text,
-        id: founded.id,
-      });
-      localStorage.removeItem('tasks');
-      localStorage.setItem('tasks', JSON.stringify(this.tasksProps));
-      localStorage.removeItem('deletedTasks');
-      localStorage.setItem('deletedTasks', JSON.stringify(this.deletedTasksProps));
-    }
+    store.dispatch(toggleToDo({ id: id }));
   };
 
   private textAreaChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -193,12 +85,27 @@ class ToDoList extends React.Component<unknown, ToDoListI> {
   };
 
   render(): React.ReactNode {
+    const todos = this.state.tasks.filter((todo) => {
+      return !todo.completed;
+    });
+    const jsxTodos = todos.map((todo) => {
+      return <ToDo onClick={this.toggleToDo} label={todo.label} key={todo.id} id={todo.id} text={todo.text} />;
+    });
+    const completedTodos = this.state.tasks.filter((todo) => {
+      return todo.completed;
+    });
+    const jsxCompletedTodos = completedTodos.map((todo) => {
+      return (
+        <ToDo onClick={this.toggleToDo} deleted={true} label={todo.label} key={todo.id} id={todo.id} text={todo.text} />
+      );
+    });
+
     return (
       <div className="todo-list">
         <Fonts type="h2" text="Задачи" />
         <div className="todo-list__list">
-          <Accordion items={this.state.tasks} label="Задачи" />
-          <Accordion items={this.state.doneTasks} label="Сделано" />
+          <Accordion items={jsxTodos} label="Задачи" />
+          <Accordion items={jsxCompletedTodos} label="Сделано" />
         </div>
         <div className="todo-list__form">
           <Input

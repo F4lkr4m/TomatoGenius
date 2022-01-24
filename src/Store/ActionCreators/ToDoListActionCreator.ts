@@ -11,9 +11,13 @@ interface AddToDo {
   payload: ToDoPayload;
 }
 
+interface ToggleToDoPayload {
+  id: string;
+}
+
 interface ToggleToDo {
   type: ToDoActionType.TOGGLE_TODO;
-  payload: string;
+  payload: ToggleToDoPayload;
 }
 
 export function addToDo(payload: ToDoPayload) {
@@ -24,10 +28,10 @@ export function addToDo(payload: ToDoPayload) {
   return action;
 }
 
-export function toggleToDo(id: string) {
+export function toggleToDo(payload: ToggleToDoPayload) {
   const action: ToggleToDo = {
     type: ToDoActionType.TOGGLE_TODO,
-    payload: id,
+    payload: payload,
   };
   return action;
 }

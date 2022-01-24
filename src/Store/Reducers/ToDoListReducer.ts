@@ -1,15 +1,15 @@
 import { ToDoAction } from '../ActionCreators/ToDoListActionCreator';
 import { ToDoActionType } from '../Actions/ToDoListActions';
 
-interface ToDo {
+export interface ToDoI {
   label: string;
   text: string;
   id: string;
   completed: boolean;
 }
 
-interface State {
-  todos: Array<ToDo>;
+export interface State {
+  todos: Array<ToDoI>;
 }
 
 const initialState = {
@@ -29,8 +29,18 @@ export const ToDoListReducer = (state: State = initialState, action: ToDoAction)
       };
     }
     case ToDoActionType.TOGGLE_TODO: {
-      console.log('TOGGLE TODO');
-      return state;
+      const newTodos = state.todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          };
+        }
+        return todo;
+      });
+      return {
+        todos: newTodos,
+      };
     }
     default:
       return state;
